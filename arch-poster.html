@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI 建築競圖海報｜一方庭Lecasa</title>
+    <!-- 引入思源宋體與無襯線字體，增加設計感 -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f4f4f3;
+            --surface: #ffffff;
+            --line: #dcdcd9;
+            --text: #2a2a2a;
+            --text-secondary: #6e6e6e;
+            --accent: #ca8a8b;
+            /* 內斂的玫瑰金/粉褐 */
+            --accent-hover: #b27374;
+            --font-serif: "Noto Serif TC", "PMingLiU", serif;
+            --font-sans: "Noto Sans TC", "Helvetica Neue", "Arial", sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-sans);
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0.01) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.01) 1px, transparent 1px);
+            background-size: 40px 40px;
+            /* 隱約的網格背景增添建築製圖感 */
+        }
+
+        .wrap {
+            width: min(1080px, 92vw);
+            margin: 0 auto;
+            padding: 60px 0 80px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.04);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero {
+            padding: 50px 40px;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .brand-mark {
+            font-family: var(--font-serif);
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            font-family: var(--font-serif);
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: #1a1a1a;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 0.95rem;
+            font-weight: 300;
+            letter-spacing: 0.03em;
+        }
+
+        .grid {
+            display: grid;
+            gap: 30px;
+        }
+
+        @media (min-width: 900px) {
+            .grid.two {
+                grid-template-columns: 1fr 1.1fr;
+            }
+        }
+
+        section {
+            padding: 40px;
+        }
+
+        h2 {
+            margin: 0 0 24px;
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            color: var(--text);
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 12px;
+            letter-spacing: 0.08em;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .field-group {
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin: 0 0 8px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            background: #fafaf9;
+            color: var(--text);
+            border: 1px solid #e5e5e0;
+            padding: 12px 16px;
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            background: #fff;
+            border-color: var(--accent);
+            box-shadow: inset 2px 0 0 var(--accent);
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .chip {
+            border: 1px solid var(--line);
+            background: transparent;
+            color: var(--text-secondary);
+            padding: 4px 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            letter-spacing: 0.02em;
+            transition: all 0.2s;
+            border-radius: 20px;
+        }
+
+        .chip:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(202, 138, 139, 0.05);
+        }
+
+        /* 輸出區塊美化 */
+        .output-wrapper {
+            position: relative;
+            background: #fdfdfc;
+            border: 1px solid var(--line);
+            padding: 24px;
+        }
+
+        .output-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
+
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            color: #333;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            font-family: 'Consolas', 'Monaco', monospace;
+            /* 保持對話方塊的代碼感 */
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        pre::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        pre::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        pre::-webkit-scrollbar-thumb {
+            background: #dcdcd9;
+            border-radius: 4px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 36px;
+        }
+
+        button {
+            border: 1px solid transparent;
+            padding: 12px 28px;
+            font-family: var(--font-serif);
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background: var(--text);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent);
+            box-shadow: 0 4px 12px rgba(202, 138, 139, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border-color: var(--line);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text);
+        }
+
+        /* 美化底部版權 */
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .copyright {
+            font-family: var(--font-serif);
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .copyright::before,
+        .copyright::after {
+            content: '';
+            height: 1px;
+            width: 30px;
+            background: var(--line);
+        }
+
+        .footer-sub {
+            font-size: 0.75rem;
+            margin-top: 8px;
+            letter-spacing: 0.05em;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="wrap">
+        <header class="card hero">
+            <span class="brand-mark">Lecasa Design Studio</span>
+            <h1>AI 建築競圖海報 · 語法生成器</h1>
+            <p class="subtitle">將空間照片轉化為高品質的展板級圖面。選擇光影與材質語彙，系統將自動編譯給視覺模型的專業建築提示詞。</p>
+        </header>
+
+        <div class="grid two">
+            <section class="card">
+                <h2>Parameter Settings</h2>
+                <div class="form-grid">
+                    <div class="field-group">
+                        <label for="accentColor">點綴色調 (Accent Color)</label>
+                        <input id="accentColor" value="淡粉/玫瑰金" />
+                        <div class="chips" data-target="accentColor">
+                            <button type="button" class="chip">淡粉/玫瑰金</button>
+                            <button type="button" class="chip">黃銅/暖銅金</button>
+                            <button type="button" class="chip">科技藍/清水模灰</button>
+                            <button type="button" class="chip">質樸砂岩/溫潤木質</button>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="baseStyle">圖面語彙 (Visual Style)</label>
+                        <input id="baseStyle" value="競圖拼貼＋精緻線稿" />
+                        <div class="chips" data-target="baseStyle">
+                            <button type="button" class="chip">競圖拼貼＋精緻線稿</button>
+                            <button type="button" class="chip">博物館級照片實景＋圖表</button>
+                            <button type="button" class="chip">全白素模感＋高對比陰影</button>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="lighting">光影層次 (Lighting Atmosphere)</label>
+                        <input id="lighting" value="暖光 2700–3000K" />
+                        <div class="chips" data-target="lighting">
+                            <button type="button" class="chip">暖光 2700–3000K</button>
+                            <button type="button" class="chip">自然漫射日光 5500K</button>
+                            <button type="button" class="chip">冷冽博物館白光 4000K</button>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="format">排版比例 (Layout Format)</label>
+                        <input id="format" value="直式 A1 構圖感海報（594×841mm 比例）" />
+                        <div class="chips" data-target="format">
+                            <button type="button" class="chip">直式 A1 構圖</button>
+                            <button type="button" class="chip">橫式 16:9 展示簡報</button>
+                            <button type="button" class="chip">方形 1:1 細部聚焦</button>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="extraReq">空間特徵保留 (Key Elements)</label>
+                        <textarea id="extraReq">需精確保留空間辨識核心元素（如：主構件、主要立面背牆、燈具配置、地坪紋理、隔間與窗帶關係）。</textarea>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn-primary" id="generateBtn">Generate Prompt</button>
+                    <button class="btn-secondary" id="copyBtn">Copy Text</button>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>Compiled Prompt</h2>
+                <div class="output-wrapper">
+                    <pre id="promptOut"></pre>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <div class="copyright">一方庭 Lecasa</div>
+            <div class="footer-sub">Architecture & Visual Design © 2026 All Rights Reserved.</div>
+        </footer>
+    </main>
+
+    <script>
+        const ids = ['accentColor', 'baseStyle', 'lighting', 'format', 'extraReq'];
+        const byId = (id) => document.getElementById(id);
+        const promptOut = byId('promptOut');
+
+        function buildPrompt() {
+            const v = Object.fromEntries(ids.map(id => [id, byId(id).value.trim()]));
+
+            return `# 自動生成建築競圖海報提示詞（單張照片輸入）
+
+你是一位代表一方庭Lecasa的建築視覺總監與技術繪圖整合助手。
+
+任務：我會貼上 1 張參考照片（同一空間）。請你**只根據這張照片**，自動生成 1 張完整建築競圖海報（Competition Poster），且海報中的所有圖面與文字皆自動完成。
+
+---
+
+## 核心限制（最高優先）
+1. **單一空間一致性**：海報 100% 只能來自這張照片所示空間，不得引入其他基地、其他房間、或無關場景。
+2. **一致幾何與材料**：所有視圖必須維持一致的空間幾何、材料、光環境。
+3. **真實可建構**：圖面必須看起來可施工、可理解，不可只是裝飾性漂浮圖。
+4. **若尺寸不確定**：一律標示 \`assumed / approx.\`，不可假裝精準。
+
+---
+
+## 輸出規格
+- 只輸出 **1 張 ${v.format}**。
+- 影像輸出需 **4K 以上**（PNG 或 JPG）。
+- 版面風格：**${v.baseStyle}＋${v.accentColor}點綴＋白底留白**。
+- 除${v.accentColor}強調外，其餘以黑灰線稿與中性文字為主。
+
+---
+
+## 海報必備區塊（全部圍繞同一空間）
+
+### 1) Hero Image（主視覺）
+- 以參考照片為基礎生成主視覺，需具真實攝影感（不可像乾淨 3D 模型）。
+- ${v.extraReq || '保留空間辨識核心元素。'}
+- 可做：微幅去雜訊、清理雜物、提升材質辨識。
+- 不可做：改變風格、改變主要配置。
+
+### 2) Atlas Axonometric（等角/軸測總圖）
+- 繪製同一空間軸測總圖。
+- 線稿細緻（黑/灰），局部以${v.accentColor}做重點標註框與結構提示。
+
+### 3) Exploded Layers（爆炸分層，至少 4 層）
+至少包含：
+- 地坪層（鋪面方向與拼接邏輯）
+- 家具/展示主體層（含燈帶或結構層次）
+- 牆體/背牆系統層（收納/展示/裝置）
+- 天花/照明層（軌道燈/嵌燈/管線感/天花系統）
+
+### 4) Plan + Section（平面＋1 剖面）
+- 依照片內容推測合理比例，繪製平面與 1 張剖面。
+- 所有不確定尺寸標 \`assumed / approx.\`。
+
+### 5) Detail Callouts（至少 2 個細部放大）
+- 從照片挑 2 個關鍵辨識點，做推測構造示意，重點呈現材料分層與光學邏輯。
+
+### 6) Material & Light Palette（材質與光）
+- 呈現 2–5 個主要材質樣本，金屬/重點色限定${v.accentColor}。
+- 光環境設定：${v.lighting}（若原圖偏冷可微調，但不可改變風格）。
+
+### 7) Concept Narrative（概念敘事）
+- 1 句標題 + 3 行短文，語氣務實，對應此空間的主構件、動線與光影邏輯。
+
+---
+
+## 視覺與真實感規範
+- 主視覺需具備：24–28mm 建築攝影視角感、輕微暗角、適度底片顆粒、真實尺度紋理。
+- 整體應呈現「建築攝影 + 競圖拼貼」圖面質感。
+- 禁止出現任何與該照片空間無關之元素、場景、風格敘事。
+
+**只輸出海報成品 1 張（高解析），不要輸出額外解釋、步驟或前言。**`;
+        }
+
+        function renderPrompt() {
+            promptOut.textContent = buildPrompt();
+        }
+
+        async function copyData() {
+            try {
+                await navigator.clipboard.writeText(promptOut.textContent);
+                const btn = byId('copyBtn');
+                const originalText = btn.textContent;
+                btn.textContent = 'COPIED!';
+                btn.style.borderColor = 'var(--text)';
+                btn.style.color = 'var(--text)';
+
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.borderColor = '';
+                    btn.style.color = '';
+                }, 2000);
+            } catch {
+                alert('複製失敗，請手動複製。');
+            }
+        }
+
+        // 事件監聽與綁定
+        document.querySelectorAll('.chips').forEach(wrap => {
+            const target = wrap.dataset.target;
+            wrap.querySelectorAll('.chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    byId(target).value = chip.textContent;
+                    renderPrompt();
+                });
+            });
+        });
+
+        ids.forEach(id => {
+            byId(id).addEventListener('input', renderPrompt);
+        });
+
+        byId('generateBtn').addEventListener('click', renderPrompt);
+        byId('copyBtn').addEventListener('click', copyData);
+
+        // 初始渲染
+        renderPrompt();
+    </script>
+</body>
+
+</html>
